@@ -52,13 +52,13 @@ def dZminusphib(phi, phib, u, T, p, M):
     return a/b
 
 def dZplusM(phi, phib, u, T, p, M):
-    a = -3*M*((phib + 2*phi*np.exp(-(Ep(p,M) + u)/T))*np.exp(-(Ep(p,M) + u)/T) + np.exp(-3*(Ep(p,M)+u)/T))
-    b = Ep(p,M)*T*(1 + 3*(phib + phi*np.exp(-(Ep(p,M) + u)/T))*(np.exp(-(Ep(p,M) + u)/T)) + np.exp(-3*(Ep(p,M) + u)/T))
+    a = -3*M*(np.exp(-3*(Ep(p,M)+u)/T) + phi*np.exp(-2*(Ep(p,M)+u)/T) + np.exp(-(Ep(p,M)+u)/T)*(phib + phi*np.exp(-(Ep(p,M)+u)/T)))/(Ep(p,M)*T)
+    b = 1 + 3*(phib + phi*np.exp(-(Ep(p,M) + u)/T))*(np.exp(-(Ep(p,M) + u)/T)) + np.exp(-3*(Ep(p,M) + u)/T)
     return a/b
 
 def dZminusM(phi, phib, u, T, p, M):
-    a = -3*M*((phi + 2*phib*np.exp(-(Ep(p,M) - u)/T))*np.exp(-(Ep(p,M) - u)/T) + np.exp(-3*(Ep(p,M)-u)/T))
-    b = Ep(p,M)*T*(1 + 3*(phi + phib*np.exp(-(Ep(p,M) - u)/T))*(np.exp(-(Ep(p,M) - u)/T)) + np.exp(-3*(Ep(p,M) - u)/T))
+    a = -3*M*(np.exp(-3*(Ep(p,M)-u)/T) + phib*np.exp(-2*(Ep(p,M)-u)/T) + np.exp(-(Ep(p,M)-u)/T)*(phi + phib*np.exp(-(Ep(p,M)-u)/T)))/(Ep(p,M)*T)
+    b = 1 + 3*(phi + phib*np.exp(-(Ep(p,M) - u)/T))*(np.exp(-(Ep(p,M) - u)/T)) + np.exp(-3*(Ep(p,M) - u)/T)
     return a/b
 
 def dOmegaphi(phi,phib,u,T,M):
@@ -72,10 +72,10 @@ def dOmegaphib(phi,phib,u,T,M):
     return a - (Nf*T*b)/pi2
 
 def dOmegaM(phi,phib,u,T,M):
-    a = (M-m)/G
+    a = (M-m)/(2*G)
     b = sp.integrate.quad(lambda k: (k**2)*(dZminusM(phi, phib, u, T, k, M) + dZplusM(phi, phib, u, T, k, M)), 0, np.inf)[0]
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
-    return a - (Nf*T*b - 3*Nf*c)/pi2
+    return a - (Nf*T*b + 3*Nf*c)/pi2
 
 def sistema(u,T,chuteinit):
     z = np.empty(3)
