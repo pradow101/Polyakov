@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 from constants import *
+from scipy.optimize import fsolve
 
 
 def Ep(p,M):
@@ -77,15 +78,18 @@ def dOmegaM(phi,phib,u,T,M):
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
     return a - (Nf*T*b + 3*Nf*c)/pi2
 
-def sistema(u,T,chuteinit): #The error is here, all numerical values for defined functions are correct. Have to find another method to solve the system.
-    z = np.empty(3)
-    phi = z[0]
-    phib = z[1]
-    M = z[2]
-    def eqns(z):
-        z[0] = dOmegaphi(phi,phib,u,T,M)
-        z[1] = dOmegaphib(phi,phib,u,T,M)
-        z[2] = dOmegaM(phi,phib,u,T,M)
-        return z
-    result = sp.optimize.fsolve(eqns, chuteinit)
-    return result
+def system_equations(variables, u, T):
+    phi, phib, M = variables
+    return [dOmegaphi(phi, phib, u, T, M), 
+            dOmegaphib(phi, phib, u, T, M), 
+            dOmegaM(phi, phib, u, T, M)]
+
+def solve_system(u, T, initial_guess):
+    try:
+        solution = fsolve(system_equations, initial_guess, args=(u, T))
+        return solution
+    except Exception as e: #Has to have this try/except to avoid errors in the fsolve function
+        print(f"Error during solution for T={T}: {e}")
+        return None
+
+
