@@ -77,7 +77,7 @@ def dOmegaM(phi,phib,u,T,M):
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
     return a - (Nf*T*b + 3*Nf*c)/pi2
 
-def sistema(u,T,chuteinit):
+def sistema(u,T,chuteinit): #The error is here, all numerical values for defined functions are correct. Have to find another method to solve the system.
     z = np.empty(3)
     phi = z[0]
     phib = z[1]
