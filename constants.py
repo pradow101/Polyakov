@@ -12,11 +12,10 @@ L = 0.651
 L2 = L*L
 G = 5.04
 m = 0.0055
-To = 0.27
+To = 0.19
 
 
 
 pi = np.pi
-pi2 = pi*pi
-h = 0.0001
+pi2 = np.pi*np.pi
 

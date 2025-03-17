@@ -64,18 +64,18 @@ def dZminusM(phi, phib, u, T, p, M):
 def dOmegaphi(phi,phib,u,T,M):
     a = dUphi(phi,phib,T)
     b = sp.integrate.quad(lambda k: (k**2)*(dZminusphi(phi, phib, u, T, k, M) + dZplusphi(phi, phib, u, T, k, M)), 0, np.inf)[0]
-    return a - (1/pi2)*Nf*T*b
+    return a - (Nf*T*b)/pi2
 
 def dOmegaphib(phi,phib,u,T,M):
     a = dUphib(phi,phib,T)
     b = sp.integrate.quad(lambda k: (k**2)*(dZminusphib(phi, phib, u, T, k, M) + dZplusphib(phi, phib, u, T, k, M)), 0, np.inf)[0]
-    return a - (1/pi2)*Nf*T*b
+    return a - (Nf*T*b)/pi2
 
 def dOmegaM(phi,phib,u,T,M):
     a = (M-m)/G
     b = sp.integrate.quad(lambda k: (k**2)*(dZminusM(phi, phib, u, T, k, M) + dZplusM(phi, phib, u, T, k, M)), 0, np.inf)[0]
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
-    return a - (1/pi2)*(Nf*T*b - 3*Nf*c)
+    return a - (Nf*T*b - 3*Nf*c)/pi2
 
 def sistema(u,T,chuteinit):
     z = np.empty(3)
