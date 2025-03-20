@@ -78,18 +78,4 @@ def dOmegaM(phi,phib,u,T,M):
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
     return a - (Nf*T*b + 3*Nf*c)/pi2
 
-def system_equations(variables, u, T):
-    phi, phib, M = variables
-    return [dOmegaphi(phi, phib, u, T, M), 
-            dOmegaphib(phi, phib, u, T, M), 
-            dOmegaM(phi, phib, u, T, M)]
-
-def solve_system(u, T, initial_guess):
-    try:
-        solution = fsolve(system_equations, initial_guess, args=(u, T))
-        return solution
-    except Exception as e: #Has to have this try/except to avoid errors in the fsolve function
-        print(f"Error during solution for T={T}: {e}")
-        return None
-
 
