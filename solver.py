@@ -15,7 +15,6 @@ def solve_system(u, T, initial_guess):
     except Exception as e: #Has to have this try/except to avoid errors in the fsolve function
         print(f"Error during solution for T={T}: {e}")
         return None
-    
 
 def solverTrange(u, T_vals, chuteinit):
     results = {}
@@ -24,11 +23,17 @@ def solverTrange(u, T_vals, chuteinit):
         solucao = solve_system(u, T, chuteatual)
         results[T] = solucao
         chuteatual = solucao
-    return results
+    if dOmegaM(solution[0], solution[1], u, T, solution[2]) > 1e-13 and dOmegaphi(solution[0], solution[1], u, T, solution[2]) > 1e-13:
+        return None
+    else:
+        return results
+    
+## Implementar certo as precisões para as soluções e arrumar fsolve para continuar tentando até achar solução correta.
 
-T_vals = np.linspace(0.01, 0.3, 150)
+
+T_vals = np.linspace(0.01, 0.3, 50)
 chuteinit = [0.01, 0.01, 0.3]
-u = 0
+u = 0.34
 solutions = solverTrange(u, T_vals, chuteinit)
 
 phi_vals = []
@@ -49,3 +54,7 @@ plt.plot(T_vals, phi_vals,label='phi')
 plt.plot(T_vals, M_vals,label='M')
 plt.legend()
 plt.show()
+
+
+a = (dOmegaM(phiv, phibv, u, T, Mv) for T, (phiv, phibv, Mv) in solutions.items())
+print(list(a))
