@@ -78,4 +78,21 @@ def dOmegaM(phi,phib,u,T,M):
     c = sp.integrate.quad(lambda k: (k**2)*dEp(k,M), 0, L)[0]
     return a - (Nf*T*b + 3*Nf*c)/pi2
 
+def d2OmegaM(phi,phib,u,T,M):               #
+    a = phi + phib*np.exp(-Ep(u,M)/T)       #
+    b = phi*np.exp(-Ep(u,M)/T) + phib       #
+    return -3*(a*b)/(Ep(u,M)*T)             #
+                                            # só para ter algo definido, não são essas funções de fato.
+def d3OmegaM(phi,phib,u,T,M):               #       
+    a = phi + phib*np.exp(-Ep(u,M)/T)       #
+    b = phi*np.exp(-Ep(u,M)/T) + phib       #
+    return 3*(a*b)/(Ep(u,M)*T)**2           #
+
+def CEPeqns(phi,phib,u,T,M):
+    a = dOmegaphi(phi,phib,u,T,M)
+    b = dOmegaphib(phi,phib,u,T,M)
+    c = dOmegaM(phi,phib,u,T,M)
+    d = d2OmegaM(phi,phib,u,T,M)
+    e = d3OmegaM(phi,phib,u,T,M)
+    return [a,b,c,d,e]
 
