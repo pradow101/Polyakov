@@ -17,18 +17,19 @@ def solve_system(u, T, initial_guess):
         return None
 
 def solverTrange(u, T_vals, chuteinit):
-    results = {}
+    results = []
     chuteatual = chuteinit
     for T in T_vals:
-        solucao = solve_system(u, T, chuteatual)
-        results[T] = solucao
-        chuteatual = solucao
-
+        solution = solve_system(u, T, chuteatual)
+        phi, phib, M = solution
+        chuteatual = solution
+        results.append((T, phi, phib, M))
+    return results
     
 ## Implementar certo as precisões para as soluções e arrumar fsolve para continuar tentando até achar solução correta.
 
 
-T_vals = np.linspace(0.01, 0.3, 50)
+T_vals = np.linspace(0.045, 0.08, 150)
 chuteinit = [0.01, 0.01, 0.3]
 u = 0.34
 solutions = solverTrange(u, T_vals, chuteinit)
@@ -37,21 +38,29 @@ phi_vals = []
 phib_vals = []
 M_vals = []
 
-for T, solution in solutions.items():
-    phi, phib, M = solution
+for T, phi, phib, M in solutions:
     phi_vals.append(phi)
     phib_vals.append(phib)
     M_vals.append(M)
 
-for i in range(len(M_vals)):
-    M_vals[i] = M_vals[i]/0.32552503427962565
-
-plt.plot(T_vals, phi_vals,label='phi')
+#plt.plot(T_vals, phi_vals,label='phi')
 #plt.plot(T_vals, phib_vals,label='phib')
-plt.plot(T_vals, M_vals,label='M')
-plt.legend()
+#plt.plot(T_vals, M_vals,label='M')
+#plt.legend()
+
+
+yplot = []
+y2plot = []
+for i in range(len(T_vals)):
+    a = T_vals[i]
+    b = phi_vals[i]
+    c = phib_vals[i]
+    d = M_vals[i]
+    yi = dOmegaM(b,c,u,a,d)
+    yib = dOmegaphi(b,c,u,a,d)
+    yplot.append(yi)
+    y2plot.append(yib)
+
+plt.plot(T_vals, yplot,label='dOmegaM')
+plt.plot(T_vals, y2plot,label='dOmegaphi')
 plt.show()
-
-
-a = (dOmegaM(phiv, phibv, u, T, Mv) for T, (phiv, phibv, Mv) in solutions.items())
-print(list(a))
