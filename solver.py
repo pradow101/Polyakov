@@ -23,10 +23,7 @@ def solverTrange(u, T_vals, chuteinit):
         solucao = solve_system(u, T, chuteatual)
         results[T] = solucao
         chuteatual = solucao
-    if dOmegaM(solution[0], solution[1], u, T, solution[2]) > 1e-13 and dOmegaphi(solution[0], solution[1], u, T, solution[2]) > 1e-13:
-        return None
-    else:
-        return results
+
     
 ## Implementar certo as precisões para as soluções e arrumar fsolve para continuar tentando até achar solução correta.
 
