@@ -16,11 +16,12 @@ def zminus(phi, phib, u, T, p, M):
 def zplus(phi, phib, u, T, p, M):
     return np.log(1 + 3*(phib + phi*np.exp((-1/T)*(Ep(p,M) + u)))*(np.exp((-1/T)*(Ep(p,M) + u))) + np.exp((-3/T)*(Ep(p,M) + u)))
 
-def potencial(x, u, T): ###Não vou precisar mais do potencial, eu acho. Como estou definindo todas as derivadas, este fica implícito nelas.
-    a = sp.integrate.quad(lambda k: (k**2)*(zminus(x[0], x[1], u, T, k, x[2]) + zplus(x[0], x[1], u, T, k, x[2])), 0, np.inf)[0]
-    b = Ep(L,x[2])*np.abs(0.0689736 + 0.081375*(x[2]**2) - (0.125*(x[2]**3)*np.arcsin(L/x[2]))/(np.sqrt(1 + (L**2)/x[2]**2)))
-    return ((x[2]-m)**2)/(2*G) - (1/(pi2))*(Nf*T*a + 3*Nf*b) + U(x[0], x[1], T)
-
+def potencial(vars, u, T):
+    phi, phib, M = vars ###Não vou precisar mais do potencial, eu acho. Como estou definindo todas as derivadas, este fica implícito nelas.
+    a = sp.integrate.quad(lambda k: (k**2)*(zminus(phi, phib, u, T, k, M) + zplus(phi, phib, u, T, k, M)), 0, np.inf)[0]
+    b = Ep(L,M)*(0.0689736 + 0.081375*(M**2) - (0.125*(M**3)*np.arcsin(L/M))/(np.sqrt(1 + (L**2)/(M**2))))
+    return ((M-m)**2)/(2*G) - (1/(pi2))*(Nf*T*a + 3*Nf*b) + U(phi, phib, T)
+    
 ##DERIVADAS
 
 def dEp(p,M):
