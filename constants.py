@@ -16,5 +16,5 @@ To = 0.19
 
 
 pi = np.pi
-pi2 = np.pi*np.pi
+pi2 = np.pi**2
 

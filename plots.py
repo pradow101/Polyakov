@@ -1,10 +1,5 @@
 from solver import *
-
-
-#plt.plot(T_vals, phi_vals,label='phi')
-#plt.plot(T_vals, phib_vals,label='phib')
-#plt.plot(T_vals, M_vals,label='M')
-#plt.legend()
+import matplotlib.pyplot as plt
 
 
 yplot = []
@@ -22,5 +17,10 @@ for i in range(len(T_vals)):
 # plt.plot(T_vals, np.log10(np.abs(yplot)),label='dOmegaM')
 # plt.plot(T_vals, np.log10(np.abs(y2plot)),label='dOmegaphi')
 
+
+# plt.plot(T_vals, phi_vals,label='phi')
+# plt.plot(T_vals, phib_vals,label='phib')
+plt.plot(T_vals, M_vals,label='M')
 plt.scatter(T_vals, phi_vals,s=0.5)
+plt.legend()
 plt.show()
